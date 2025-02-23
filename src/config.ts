@@ -1,3 +1,5 @@
+type NodeEnv = 'development' | 'production'
+
 export class Config {
   private _getRequiredValue(key: string) {
     const value = process.env[key]
@@ -19,4 +21,8 @@ export class Config {
   public train = {
     userId: this._getValue('TRAIN_USER_ID'),
   }
+
+  public nodeEnv: NodeEnv = this._getValue('NODE_ENV')
+    ? (this._getValue('NODE_ENV') as NodeEnv)
+    : 'production'
 }

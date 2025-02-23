@@ -1,5 +1,5 @@
 import './init'
-import { SapphireClient } from '@sapphire/framework'
+import { LogLevel, SapphireClient } from '@sapphire/framework'
 import { container } from '@sapphire/pieces'
 import { GatewayIntentBits, Partials } from 'discord.js'
 
@@ -17,6 +17,15 @@ const client = new SapphireClient({
     repliedUser: true,
   },
   partials: [Partials.Message, Partials.ThreadMember],
+  logger: {
+    level:
+      container.config.nodeEnv === 'development'
+        ? LogLevel.Debug
+        : LogLevel.Info,
+  },
 })
+
+client.on('debug', container.logger.debug)
+client.on('error', container.logger.error)
 
 client.login(container.config.bot.token)
