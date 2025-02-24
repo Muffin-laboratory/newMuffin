@@ -7,12 +7,38 @@ export class MessageCreateListener extends Listener {
   }
 
   public async run(msg: Message) {
-    let data: any[] = []
+    let data: Array<
+      | {
+          id: number
+          text: string
+          created_at: Date | null
+          persona: string
+        }
+      | {
+          id: number
+          text: string
+          search_text: string
+          conversation: string
+          created_at: Date | null
+          in_response_to: string | null
+          search_in_response_to: string
+          persona: string
+        }
+    > = []
 
     if (msg.author.bot) return
-    if (!msg.content.startsWith(this.container.prefix)) return
-    const content = msg.content.split(' ')[1]
+    const content = msg.content.slice(this.container.prefix.length)
 
+    if (msg.author.id === this.container.config.train.userId) {
+      await this.container.database.statement.create({
+        data: {
+          text: msg.content.slice(this.container.prefix.length),
+          persona: 'muffin',
+        },
+      })
+    }
+
+    if (!msg.content.startsWith(this.container.prefix)) return
     if (this.container.stores.get('commands').get(content)) return
 
     const randomNumber = this._getRandom(5)
@@ -25,6 +51,13 @@ export class MessageCreateListener extends Listener {
       ;(await this.container.database.nsfw_content.findMany()).forEach(
         nsfwData => data.push(nsfwData),
       )
+
+      await this.container.database.nsfw_content.create({
+        data: {
+          text: content,
+          persona: `user:${msg.author.username.slice(0, 45).toLowerCase()}`,
+        },
+      })
     }
 
     const learnDatas = await this.container.database.learn.findMany({
