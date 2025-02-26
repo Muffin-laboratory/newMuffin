@@ -1,3 +1,4 @@
+import { Learn, Text, type IText } from '../lib/databases'
 import { Listener } from '@sapphire/framework'
 import type { Message, TextChannel } from 'discord.js'
 
@@ -6,64 +7,43 @@ export class MessageCreateListener extends Listener {
     return Math.floor(Math.random() * length)
   }
 
-  public async run(msg: Message) {
-    let data: Array<
-      | {
-          id: number
-          text: string
-          created_at: Date | null
-          persona: string
-        }
-      | {
-          id: number
-          text: string
-          search_text: string
-          conversation: string
-          created_at: Date | null
-          in_response_to: string | null
-          search_in_response_to: string
-          persona: string
-        }
-    > = []
+  public async run(msg: Message<true>) {
+    let datas: IText[] = []
 
     if (msg.author.bot) return
     const content = msg.content.slice(this.container.prefix.length)
 
-    if (msg.author.id === this.container.config.train.userId) {
-      await this.container.database.statement.create({
-        data: {
-          text: msg.content.slice(this.container.prefix.length),
-          persona: 'muffin',
-        },
-      })
-    }
+    if (
+      this.container.config.train.userId &&
+      msg.author.id === this.container.config.train.userId
+    )
+      await new Text({
+        text: msg.content.slice(this.container.prefix.length),
+        persona: 'muffin',
+      }).save()
 
     if (!msg.content.startsWith(this.container.prefix)) return
     if (this.container.stores.get('commands').get(content)) return
 
+    await msg.channel.sendTyping()
+
     const randomNumber = this._getRandom(5)
 
-    ;(await this.container.database.statement.findMany()).forEach(muffinData =>
-      data.push(muffinData),
-    )
-
     if ((msg.channel as TextChannel).nsfw) {
-      ;(await this.container.database.nsfw_content.findMany()).forEach(
-        nsfwData => data.push(nsfwData),
-      )
+      ;(await Text.find()).forEach(data => datas.push(data))
 
-      await this.container.database.nsfw_content.create({
-        data: {
-          text: content,
-          persona: `user:${msg.author.username.slice(0, 45).toLowerCase()}`,
-        },
-      })
+      await new Text({
+        text: content,
+        persona: `user:${msg.author.username.slice(0, 45).toLowerCase()}`,
+      }).save()
+    } else {
+      ;(await Text.find({ persona: 'muffin' })).forEach(data =>
+        datas.push(data),
+      )
     }
 
-    const learnDatas = await this.container.database.learn.findMany({
-      where: {
-        command: content,
-      },
+    const learnDatas = await Learn.find({
+      command: content,
     })
 
     if (randomNumber > 2 && learnDatas.length) {
@@ -77,6 +57,6 @@ export class MessageCreateListener extends Listener {
       )
     }
 
-    return await msg.reply(data[this._getRandom(data.length)].text)
+    return await msg.reply(datas[this._getRandom(datas.length)].text)
   }
 }

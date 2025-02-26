@@ -25,4 +25,5 @@ export class Config {
   public nodeEnv: NodeEnv = this._getValue('NODE_ENV')
     ? (this._getValue('NODE_ENV') as NodeEnv)
     : 'production'
+  public databaseUrl = this._getRequiredValue('DATABASE_URL')
 }
