@@ -21,6 +21,6 @@ declare module '@sapphire/framework' {
 container.dbDisconnect = async () => await disconnect()
 container.config = new Config()
 container.prefix = container.config.bot.prefix
-container.version = '5.0.0-newMuffin.e240226a'
+container.version = '5.0.0-newMuffin.e250301a'
 
 await connect(container.config.databaseUrl)

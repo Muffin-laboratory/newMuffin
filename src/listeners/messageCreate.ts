@@ -23,7 +23,7 @@ export class MessageCreateListener extends Listener {
       }).save()
 
     if (!msg.content.startsWith(this.container.prefix)) return
-    if (this.container.stores.get('commands').get(content)) return
+    if (this.container.stores.get('commands').get(content.split(' ')[0])) return
 
     await msg.channel.sendTyping()
 
