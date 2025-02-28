@@ -11,6 +11,13 @@ declare module '@sapphire/pieces' {
   }
 }
 
+declare module '@sapphire/framework' {
+  interface DetailedDescriptionCommandObject {
+    usage: string
+    examples?: string[]
+  }
+}
+
 container.dbDisconnect = async () => await disconnect()
 container.config = new Config()
 container.prefix = container.config.bot.prefix
