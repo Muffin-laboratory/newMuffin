@@ -101,6 +101,7 @@ export default class DataLengthCommand extends Command {
           inline: true,
         },
       )
+      .setColor(this.container.embedColors.default)
 
     return ctx instanceof Message
       ? await ctx.reply({

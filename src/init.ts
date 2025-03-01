@@ -8,6 +8,11 @@ declare module '@sapphire/pieces' {
     config: Config
     prefix: string
     version: string
+    embedColors: {
+      default: number
+      fail: number
+      success: number
+    }
   }
 }
 
@@ -22,5 +27,10 @@ container.dbDisconnect = async () => await disconnect()
 container.config = new Config()
 container.prefix = container.config.bot.prefix
 container.version = '5.0.0-newMuffin.e250301a'
+container.embedColors = {
+  default: 0xaddb87,
+  fail: 0xff0000,
+  success: 0x00ff00,
+}
 
 await connect(container.config.databaseUrl)
