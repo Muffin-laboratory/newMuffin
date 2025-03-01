@@ -17,7 +17,7 @@ import { josa } from 'es-hangul'
     ],
   },
 })
-export class LearnCommand extends Command {
+export default class LearnCommand extends Command {
   public registerApplicationCommands(registry: Command.Registry) {
     registry.registerChatInputCommand(builder =>
       builder
