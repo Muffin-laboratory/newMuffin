@@ -1,7 +1,7 @@
 import { Learn } from '../lib/databases'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Args, Command } from '@sapphire/framework'
-import { ChatInputCommandInteraction, codeBlock, Message } from 'discord.js'
+import { ChatInputCommandInteraction, EmbedBuilder, Message } from 'discord.js'
 import { josa } from 'es-hangul'
 
 @ApplyOptions<Command.Options>({
@@ -75,13 +75,29 @@ export default class LearnCommand extends Command {
     }
 
     if (!command || !result)
-      return await ctx.reply(
-        codeBlock(
-          'md',
-          `사용법: ${this.detailedDescription.usage}\n` +
-            `예시: ${this.detailedDescription.examples?.map(example => example).join('\n')}`,
-        ),
-      )
+      // 오직 메세지 커맨드로 사용하였을 때만 표출되는 오류 메세지
+      return await ctx.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setTitle('❌ 오류')
+            .setDescription('올바르지 않ㅇ은 용법이에요.')
+            .addFields(
+              {
+                name: '사용법',
+                value: `\`${this.detailedDescription.usage}\``,
+                inline: true,
+              },
+              {
+                name: '예시',
+                value: this.detailedDescription
+                  .examples!.map(example => `\`${example}\``)
+                  .join('\n'),
+                inline: true,
+              },
+            )
+            .setColor(this.container.embedColors.fail),
+        ],
+      })
 
     let commands: string[] = []
     let aliases: string[] = []
@@ -99,19 +115,29 @@ export default class LearnCommand extends Command {
     ]
 
     for (const ignore of ignores) {
-      if (command.includes(ignore))
+      if (command.includes(ignore)) {
+        const embed = new EmbedBuilder()
+          .setTitle('❌ 오류')
+          .setDescription('해ㄷ당 단어는 배우기 껄끄ㄹ럽네요.')
+          .setColor(this.container.embedColors.fail)
+
         return ctx instanceof Message
-          ? await ctx.reply('해ㄷ당 단어는 배울ㄹ 수 없어요.')
-          : await ctx.editReply('해ㄷ당 단어는 배울ㄹ 수 없어요.')
+          ? await ctx.reply({ embeds: [embed] })
+          : await ctx.editReply({ embeds: [embed] })
+      }
     }
 
     for (const disallowed of disallows) {
-      if (result.includes(disallowed))
+      if (result.includes(disallowed)) {
+        const embed = new EmbedBuilder()
+          .setTitle('❌ 오류')
+          .setDescription('해당 단ㅇ어의 대답으로 하기 좀 그렇ㄴ네요.')
+          .setColor(this.container.embedColors.fail)
+
         return ctx instanceof Message
-          ? await ctx.reply('해당 단ㅇ어는 개발자님이 특별히 금지하였ㅇ어요.')
-          : await ctx.editReply(
-              '해당 단ㅇ어는 개발자님이 특별히 금지하였ㅇ어요.',
-            )
+          ? await ctx.reply({ embeds: [embed] })
+          : await ctx.editReply({ embeds: [embed] })
+      }
     }
 
     await new Learn({
@@ -120,8 +146,13 @@ export default class LearnCommand extends Command {
       user_id: userId,
     }).save()
 
+    const embed = new EmbedBuilder()
+      .setTitle('✅ 성공')
+      .setDescription(`${josa(command, '을/를')} 배웠ㅇ어요.`)
+      .setColor(this.container.embedColors.success)
+
     return ctx instanceof Message
-      ? await ctx.reply(`${josa(command, '을/를')} 배웠ㅇ어요.`)
-      : await ctx.editReply(`${josa(command, '을/를')} 배웠ㅇ어요.`)
+      ? await ctx.reply({ embeds: [embed] })
+      : await ctx.editReply({ embeds: [embed] })
   }
 }
