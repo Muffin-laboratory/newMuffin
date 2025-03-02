@@ -1,7 +1,12 @@
 import { Learn } from '../lib/databases'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Args, Command } from '@sapphire/framework'
-import { ChatInputCommandInteraction, EmbedBuilder, Message } from 'discord.js'
+import {
+  ChatInputCommandInteraction,
+  EmbedBuilder,
+  Message,
+  MessageFlags,
+} from 'discord.js'
 import { josa } from 'es-hangul'
 
 @ApplyOptions<Command.Options>({
@@ -57,12 +62,7 @@ export default class LearnCommand extends Command {
     let result: string | undefined
 
     if (typeof this.detailedDescription === 'string') return
-    if (ctx instanceof ChatInputCommandInteraction) {
-      await ctx.deferReply()
-
-      command = ctx.options.getString('단어', true)
-      result = ctx.options.getString('대답', true)
-    } else {
+    if (ctx instanceof Message) {
       if (!args) return
       command = (await args.pick('string').catch(() => undefined))?.replaceAll(
         '_',
@@ -72,6 +72,11 @@ export default class LearnCommand extends Command {
         '_',
         ' ',
       )
+    } else {
+      await ctx.deferReply({ flags: MessageFlags.Ephemeral })
+
+      command = ctx.options.getString('단어', true)
+      result = ctx.options.getString('대답', true)
     }
 
     if (!command || !result)
