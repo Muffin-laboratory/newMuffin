@@ -1,4 +1,5 @@
 import { Learn, Text, type IText } from '../lib/databases'
+import { ReleaseChannel } from '../lib/releaseChannel'
 import { Listener } from '@sapphire/framework'
 import type { Message, TextChannel } from 'discord.js'
 
@@ -14,6 +15,7 @@ export class MessageCreateListener extends Listener {
     const content = msg.content.slice(this.container.prefix.length)
 
     if (
+      this.container.channel === ReleaseChannel.Release &&
       this.container.config.train.userId &&
       msg.author.id === this.container.config.train.userId
     )
@@ -32,10 +34,11 @@ export class MessageCreateListener extends Listener {
     if ((msg.channel as TextChannel).nsfw) {
       ;(await Text.find()).forEach(data => datas.push(data))
 
-      await new Text({
-        text: content,
-        persona: `user:${msg.author.username.slice(0, 45).toLowerCase()}`,
-      }).save()
+      if (this.container.channel === ReleaseChannel.Release)
+        await new Text({
+          text: content,
+          persona: `user:${msg.author.username.slice(0, 45).toLowerCase()}`,
+        }).save()
     } else {
       ;(await Text.find({ persona: 'muffin' })).forEach(data =>
         datas.push(data),
