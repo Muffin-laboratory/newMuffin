@@ -1,3 +1,4 @@
+import type { Context } from '../lib/context'
 import { Learn, Text } from '../lib/databases'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Command } from '@sapphire/framework'
@@ -33,9 +34,7 @@ export default class DataLengthCommand extends Command {
     return await this._run(interaction)
   }
 
-  private async _run(
-    ctx: Message<true> | ChatInputCommandInteraction<'cached'>,
-  ) {
+  private async _run(ctx: Context) {
     let userId: string
     let username: string
 

@@ -1,3 +1,4 @@
+import type { Context } from '../lib/context'
 import { Learn } from '../lib/databases'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Args, Command } from '@sapphire/framework'
@@ -53,10 +54,7 @@ export default class LearnCommand extends Command {
     return await this._run(interaction)
   }
 
-  private async _run(
-    ctx: Message<true> | ChatInputCommandInteraction<'cached'>,
-    args?: Args,
-  ) {
+  private async _run(ctx: Context, args?: Args) {
     const userId = ctx instanceof Message ? ctx.author.id : ctx.user.id
     let command: string | undefined
     let result: string | undefined

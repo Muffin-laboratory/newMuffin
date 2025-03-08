@@ -1,3 +1,4 @@
+import type { Context } from '../lib/context'
 import { MuffinCustomId } from '../lib/customId'
 import { Learn } from '../lib/databases'
 import { ApplyOptions } from '@sapphire/decorators'
@@ -49,10 +50,7 @@ export default class DeleteLearnedData extends Command {
     return await this._run(interaction)
   }
 
-  private async _run(
-    ctx: Message<true> | ChatInputCommandInteraction<'cached'>,
-    args?: Args,
-  ) {
+  private async _run(ctx: Context, args?: Args) {
     let command: string | undefined
     let userId: string
 
