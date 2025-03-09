@@ -2,6 +2,7 @@ import { Learn, Text, type IText } from '../lib/databases'
 import { ReleaseChannel } from '../lib/releaseChannel'
 import { Listener } from '@sapphire/framework'
 import type { Message, TextChannel } from 'discord.js'
+import { Client } from 'dokdo'
 
 export class MessageCreateListener extends Listener {
   private _getRandom(length: number) {
@@ -26,6 +27,8 @@ export class MessageCreateListener extends Listener {
 
     if (!msg.content.startsWith(this.container.prefix)) return
     if (this.container.stores.get('commands').get(content.split(' ')[0])) return
+    if (this.container.dokdo.options.aliases?.includes(content.split(' ')[0]))
+      return this.container.dokdo.run(msg)
 
     await msg.channel.sendTyping()
 

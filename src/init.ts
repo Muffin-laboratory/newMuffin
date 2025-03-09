@@ -16,6 +16,7 @@ declare module '@sapphire/pieces' {
     }
     channel: ReleaseChannel
   }
+    dokdo: Client
 }
 
 declare module '@sapphire/framework' {
