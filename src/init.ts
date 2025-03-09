@@ -1,6 +1,7 @@
 import { Config } from './config'
 import { ReleaseChannel } from './lib/releaseChannel'
 import { container } from '@sapphire/pieces'
+import type { Client } from 'dokdo'
 import { connect, disconnect } from 'mongoose'
 
 declare module '@sapphire/pieces' {
@@ -15,8 +16,8 @@ declare module '@sapphire/pieces' {
       success: number
     }
     channel: ReleaseChannel
-  }
     dokdo: Client
+  }
 }
 
 declare module '@sapphire/framework' {
@@ -29,7 +30,7 @@ declare module '@sapphire/framework' {
 container.dbDisconnect = async () => await disconnect()
 container.config = new Config()
 container.prefix = container.config.bot.prefix
-container.version = '5.0.0-yogurt_canary.250308b'
+container.version = '5.0.0-yogurt_canary.250309a'
 container.embedColors = {
   default: 0xaddb87,
   fail: 0xff0000,

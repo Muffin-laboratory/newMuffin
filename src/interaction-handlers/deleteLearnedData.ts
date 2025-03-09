@@ -19,6 +19,14 @@ export default class DeleteLearnedDataHandler extends InteractionHandler {
   public async parse(
     interaction: StringSelectMenuInteraction | ButtonInteraction,
   ) {
+    if (
+      !interaction.customId.startsWith(
+        MuffinCustomId.DeleteLearnedDataCancel,
+      ) ||
+      !interaction.customId.startsWith(MuffinCustomId.DeleteLearnedDataUserId)
+    )
+      return this.none()
+
     const userId = interaction.isButton()
       ? interaction.customId.slice(
           MuffinCustomId.DeleteLearnedDataCancel.length,

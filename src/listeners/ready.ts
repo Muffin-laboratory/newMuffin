@@ -13,6 +13,7 @@ export default class ClientReadyListener extends Listener {
       owners: [this.container.config.bot.ownerId],
       secrets: [this.container.config.databaseUrl],
       aliases: ['dokdo', 'dok', 'Dokdo', 'Dok', '테스트'],
+      globalVariable: { container: this.container },
       noPerm: async msg =>
         await msg.reply({
           content: '당신은 내 제작자가 아니잖아!',
