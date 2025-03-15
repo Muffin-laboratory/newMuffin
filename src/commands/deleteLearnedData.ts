@@ -10,6 +10,7 @@ import {
   ChatInputCommandInteraction,
   codeBlock,
   EmbedBuilder,
+  inlineCode,
   Message,
   MessageFlags,
   StringSelectMenuBuilder,
@@ -74,12 +75,12 @@ export default class DeleteLearnedData extends Command {
             .addFields(
               {
                 name: '사용법',
-                value: `\`${this.detailedDescription.usage}\``,
+                value: inlineCode(this.detailedDescription.usage),
               },
               {
                 name: '예시',
                 value: this.detailedDescription
-                  .examples!.map(example => `\`${example}\``)
+                  .examples!.map(example => inlineCode(example))
                   .join('\n'),
               },
             )

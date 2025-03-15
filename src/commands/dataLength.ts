@@ -4,6 +4,7 @@ import { ApplyOptions } from '@sapphire/decorators'
 import { Command } from '@sapphire/framework'
 import {
   EmbedBuilder,
+  inlineCode,
   Message,
   MessageFlags,
   type ChatInputCommandInteraction,
@@ -73,30 +74,30 @@ export default class DataLengthCommand extends Command {
 
     const embed = new EmbedBuilder()
       .setTitle('저장된 데이터량')
-      .setDescription(`총합: \`${sum}\`개`)
+      .setDescription(`총합: ${inlineCode(String(sum))}개`)
       .addFields(
         {
           name: '총 채팅 데이터량',
-          value: `\`${textLength}\`개`,
+          value: `${inlineCode(String(textLength))}개`,
           inline: true,
         },
         {
           name: '총 지식 데이터량',
-          value: `\`${learnLength}\`개`,
+          value: `${inlineCode(String(learnLength))}개`,
           inline: true,
         },
         {
           name: '머핀 데이터량',
-          value: `\`${muffinLength}\`개`,
+          value: `${inlineCode(String(muffinLength))}개`,
         },
         {
           name: 'nsfw 데이터량',
-          value: `\`${nsfwLength}\`개`,
+          value: `${inlineCode(String(nsfwLength))}개`,
           inline: true,
         },
         {
           name: `${username}님이 가르쳐준 데이터량`,
-          value: `\`${userLearnLength}\`개`,
+          value: `${inlineCode(String(userLearnLength))}개`,
           inline: true,
         },
       )

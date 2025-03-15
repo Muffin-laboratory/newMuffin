@@ -5,6 +5,7 @@ import { Args, Command } from '@sapphire/framework'
 import {
   ChatInputCommandInteraction,
   EmbedBuilder,
+  inlineCode,
   Message,
   MessageFlags,
 } from 'discord.js'
@@ -87,13 +88,13 @@ export default class LearnCommand extends Command {
             .addFields(
               {
                 name: '사용법',
-                value: `\`${this.detailedDescription.usage}\``,
+                value: inlineCode(this.detailedDescription.usage),
                 inline: true,
               },
               {
                 name: '예시',
                 value: this.detailedDescription
-                  .examples!.map(example => `\`${example}\``)
+                  .examples!.map(example => inlineCode(example))
                   .join('\n'),
                 inline: true,
               },
