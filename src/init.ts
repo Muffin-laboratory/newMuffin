@@ -17,6 +17,7 @@ declare module '@sapphire/pieces' {
     }
     channel: ReleaseChannel
     dokdo: Client
+    updatedAt: Date
   }
 }
 
@@ -45,5 +46,13 @@ else if (container.version.includes(ReleaseChannel.Dev))
   container.channel = ReleaseChannel.Dev
 else if (container.version.includes(ReleaseChannel.Canary))
   container.channel = ReleaseChannel.Canary
+
+const updatedString = container.version.match(/\d+/g)![3]
+
+container.updatedAt = new Date(
+  `20${updatedString.slice(0, 2)}-` +
+    `${updatedString.slice(2, 4)}-` +
+    `${updatedString.slice(4, 6)}`,
+)
 
 await connect(container.config.databaseUrl)
