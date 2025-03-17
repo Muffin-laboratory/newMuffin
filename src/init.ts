@@ -31,7 +31,7 @@ declare module '@sapphire/framework' {
 container.dbDisconnect = async () => await disconnect()
 container.config = new Config()
 container.prefix = container.config.bot.prefix
-container.version = '5.0.0-yogurt_canary.250315a'
+container.version = '5.0.0-yogurt_canary.250317a'
 container.embedColors = {
   default: 0xaddb87,
   fail: 0xff0000,
