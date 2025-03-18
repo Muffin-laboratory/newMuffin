@@ -1,5 +1,5 @@
-import { MuffinCustomId } from '../lib/customId'
-import { Learn } from '../lib/databases'
+import { MuffinCustomId } from '$lib/customId'
+import { Learn } from '$lib/databases'
 import { ApplyOptions } from '@sapphire/decorators'
 import {
   InteractionHandler,

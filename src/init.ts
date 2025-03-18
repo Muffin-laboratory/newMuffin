@@ -1,5 +1,5 @@
+import { ReleaseChannel } from '$lib/releaseChannel'
 import { Config } from './config'
-import { ReleaseChannel } from './lib/releaseChannel'
 import { container } from '@sapphire/pieces'
 import type { Client } from 'dokdo'
 import { connect, disconnect } from 'mongoose'

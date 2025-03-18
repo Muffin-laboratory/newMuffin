@@ -1,5 +1,5 @@
-import { Learn, Text, type IText } from '../lib/databases'
-import { ReleaseChannel } from '../lib/releaseChannel'
+import { Learn, Text, type IText } from '$lib/databases'
+import { ReleaseChannel } from '$lib/releaseChannel'
 import { Listener } from '@sapphire/framework'
 import type { Message, TextChannel } from 'discord.js'
 import { Client } from 'dokdo'

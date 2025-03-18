@@ -1,5 +1,5 @@
-import type { Context } from '../../lib/context'
-import { Learn } from '../../lib/databases'
+import type { Context } from '$lib/context'
+import { Learn } from '$lib/databases'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Args, Command } from '@sapphire/framework'
 import {

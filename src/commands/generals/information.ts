@@ -1,4 +1,4 @@
-import type { Context } from '../../lib/context'
+import type { Context } from '$lib/context'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Command } from '@sapphire/framework'
 import {
