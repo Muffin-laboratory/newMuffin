@@ -14,6 +14,10 @@ import {
   name: '도움말',
   aliases: ['도움', '명령어', 'help'],
   description: '기본적인 사용ㅂ법이에요.',
+  detailedDescription: {
+    usage: '머핀아 도움말 [명령어]',
+    examples: ['머핀아 도움말', '머핀아 도움말 배워'],
+  },
 })
 export default class HelpCommand extends Command {
   public registerApplicationCommands(registry: Command.Registry) {
