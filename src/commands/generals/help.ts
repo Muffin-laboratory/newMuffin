@@ -1,5 +1,5 @@
 import type { CategoryByEnglish } from '$lib/commandCategory'
-import type { Context } from '../../lib/context'
+import type { Context } from '$lib/context'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Args, Command } from '@sapphire/framework'
 import {
